@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors');
 
 mongoose.connect('mongodb://localhost/node_auth', {
     useNewUrlParser: true,
@@ -8,10 +9,12 @@ mongoose.connect('mongodb://localhost/node_auth', {
     console.log('connect to the database')
 })
 
-app = express()
+const routes = require('./routes/routes')
 
-app.get('/', (req, res) => {
-    res.send('Hello')
-})
+app = express()
+app.use(cors())
+app.use(express.json())
+
+app.use('/api', routes)
 
 app.listen(8000)
