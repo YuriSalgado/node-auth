@@ -8,7 +8,8 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
     const user = new User({
-        name: req.body.name,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         email: req.body.email,
         password: hashedPassword
     })
@@ -37,13 +38,14 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign({ id: user._id}, "secret")
 
-    res.cookie('jwt', token, {
+    /*res.cookie('jwt', token, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000 // 1d 
-    })
+    })*/
 
     res.send({
-        message: 'success'
+        user: user,
+        token: token
     })
 })
 
