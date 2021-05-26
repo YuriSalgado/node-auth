@@ -38,14 +38,45 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign({ id: user._id}, "secret")
 
-    /*res.cookie('jwt', token, {
+    res.cookie('jwt', token, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000 // 1d 
-    })*/
+    })
 
     res.send({
-        user: user,
-        token: token
+        message: 'success'
+    })
+})
+
+router.get('/user', async (req, res) => {
+    try {
+        const cookie = req.cookies['jwt']
+
+        const claims = jwt.verify(cookie, 'secret')
+
+        if (!claims) {
+            return res.status(401).send({
+                message: 'unauthenticated'
+            })
+        }
+
+        const user = await User.findOne({_id: claims.id})
+
+        const {password, ...data} = await user.toJSON()
+        
+        res.send(data)
+    } catch (e) {
+        return res.status(401).send({
+            message: 'unauthenticated'
+        })
+    }
+})
+
+router.post('/logout', (req, res) => {
+    res.cookie('jwt', '', {maxAge: 0})
+
+    res.send({
+        message: 'success'
     })
 })
 
