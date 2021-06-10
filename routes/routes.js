@@ -51,7 +51,6 @@ router.post('/login', async (req, res) => {
 router.get('/user', async (req, res) => {
     try {
         const cookie = req.cookies['jwt']
-
         const claims = jwt.verify(cookie, 'secret')
 
         if (!claims) {
@@ -72,9 +71,8 @@ router.get('/user', async (req, res) => {
     }
 })
 
-router.post('/logout', (req, res) => {
-    res.cookie('jwt', '', {maxAge: 0})
-
+router.get('/logout', (req, res) => {
+    res.clearCookie('jwt')
     res.send({
         message: 'success'
     })
