@@ -2,7 +2,7 @@
 
 Node-auth é uma demonstração de desacoplamento por meio de APIs. O projeto cliente é o [vue-auth](https://github.com/YuriSalgado/vue-auth). Ambos completamente separados permitindo uma evolução paralelizável orientada a contratos.
 - Node and TypeScript
-- Mondodb
+- Mondodb (prerequisite down, install and config)
 - 1 models
 - 4 routes
 
